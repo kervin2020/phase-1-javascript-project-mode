@@ -1,4 +1,5 @@
 const API_URL = 'https://api.jsonbin.io/v3/b/68438e938960c979a5a6172a/record';
+
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 const searchInput = document.getElementById('search-input');
