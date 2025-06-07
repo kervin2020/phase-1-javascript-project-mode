@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Produits - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard de Gestion de Produits</h1>
+        <nav>
+            <button id="theme-toggle">Changer le thème</button>
+            <select id="category-filter">
+                <option value="">Toutes les catégories</option>
+                <option value="Électronique">Électronique</option>
+                <option value="Mobilier">Mobilier</option>
+            </select>
+        </nav>
+    </header>
+
+    <main>
+        <section id="search-section">
+            <input type="text" id="search-input" placeholder="Rechercher un produit...">
+        </section>
+
+        <section id="form-section">
+            <form id="product-form">
+                <h2>Ajouter un nouveau produit</h2>
+                <input type="text" id="product-name" placeholder="Nom du produit" required>
+                <textarea id="product-description" placeholder="Description du produit" required></textarea>
+                <select id="product-category" required>
+                    <option value="">Choisir une catégorie</option>
+                    <option value="Électronique">Électronique</option>
+                    <option value="Mobilier">Mobilier</option>
+                </select>
+                <input type="number" id="product-price" placeholder="Prix" step="0.01" required>
+                <input type="number" id="product-stock" placeholder="Stock" required>
+                <input type="text" id="product-image" placeholder="URL de l'image">
+                <button type="submit">Ajouter le produit</button>
+            </form>
+        </section>
+
+        <section id="content-section">
+            <!-- Le contenu dynamique sera inséré ici -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Dashboard de Gestion de Produits crée par Kervin Reginald Philippe Robergeau</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 
