@@ -1,4 +1,4 @@
-const API_URL = 'https://api.jsonbin.io/v3/b/68438e938960c979a5a6172a/record';
+const API_URL = 'https://projectphase1backend.onrender.com/products';
 
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
@@ -42,8 +42,7 @@ productForm.addEventListener('submit', async (e) => {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(newProduct)
         });
@@ -61,13 +60,9 @@ productForm.addEventListener('submit', async (e) => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch(API_URL, {
-            headers: {
-                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
-            }
-        });
+        const response = await fetch(API_URL);
         const data = await response.json();
-        products = data.record.products;
+        products = data;
         displayContent(products);
     } catch (error) {
         console.error('Erreur lors du chargement des données:', error);
@@ -88,11 +83,17 @@ function displayContent(data) {
             </div>
             <span class="date">Dernière mise à jour: ${product.lastUpdated}</span>
             <div class="actions">
-                <button onclick="updateStock(${product.id}, ${product.stock - 1})" ${product.stock <= 0 ? 'disabled' : ''}>
+                <button onclick="updateStock('${product.id}', ${product.stock - 1})" ${product.stock <= 0 ? 'disabled' : ''}>
                     Diminuer le stock
                 </button>
-                <button onclick="updateStock(${product.id}, ${product.stock + 1})">
+                <button onclick="updateStock('${product.id}', ${product.stock + 1})">
                     Augmenter le stock
+                </button>
+                <button onclick="editProduct('${product.id}')" class="edit-btn">
+                    Modifier
+                </button>
+                <button onclick="deleteProduct('${product.id}')" class="delete-btn">
+                    Supprimer
                 </button>
             </div>
         </div>
@@ -118,11 +119,10 @@ async function updateStock(id, newStock) {
     if (newStock < 0) return;
     
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 
                 stock: newStock,
@@ -140,6 +140,80 @@ async function updateStock(id, newStock) {
     } catch (error) {
         console.error('Erreur lors de la mise à jour du stock:', error);
     }
+}
+
+async function deleteProduct(id) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
+    
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            products = products.filter(product => product.id !== id);
+            displayContent(products);
+            showNotification('Produit supprimé avec succès');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression du produit:', error);
+        showNotification('Erreur lors de la suppression du produit', 'error');
+    }
+}
+
+async function editProduct(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    const newName = prompt('Nouveau nom:', product.name);
+    if (!newName) return;
+
+    const newDescription = prompt('Nouvelle description:', product.description);
+    if (!newDescription) return;
+
+    const newPrice = prompt('Nouveau prix:', product.price);
+    if (!newPrice) return;
+
+    const newCategory = prompt('Nouvelle catégorie:', product.category);
+    if (!newCategory) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...product,
+                name: newName,
+                description: newDescription,
+                price: parseFloat(newPrice),
+                category: newCategory,
+                lastUpdated: new Date().toISOString().split('T')[0]
+            })
+        });
+
+        if (response.ok) {
+            const updatedProduct = await response.json();
+            products = products.map(p => p.id === id ? updatedProduct : p);
+            displayContent(products);
+            showNotification('Produit modifié avec succès');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la modification du produit:', error);
+        showNotification('Erreur lors de la modification du produit', 'error');
+    }
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
 }
 
 const savedTheme = localStorage.getItem('theme');

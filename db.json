@@ -1,66 +1,22 @@
 {
   "products": [
     {
-      "id": 1,
-      "name": "Laptop Pro X1",
-      "category": "Électronique",
-      "price": 1299.99,
-      "stock": 45,
-      "description": "Ordinateur portable haute performance avec processeur i7, 16GB RAM, 512GB SSD",
-      "image": "https://example.com/laptop.jpg",
-      "rating": 4.5,
-      "lastUpdated": "2024-03-20"
-    },
-    {
-      "id": 2,
-      "name": "Smartphone Galaxy S24",
-      "category": "Électronique",
-      "price": 899.99,
-      "stock": 78,
-      "description": "Smartphone dernier cri avec caméra 108MP, 256GB de stockage",
-      "image": "https://example.com/phone.jpg",
-      "rating": 4.8,
-      "lastUpdated": "2024-03-19"
-    },
-    {
-      "id": 3,
-      "name": "Bureau Ergonome",
-      "category": "Mobilier",
-      "price": 299.99,
-      "stock": 23,
-      "description": "Bureau ajustable en hauteur avec support pour écran",
-      "image": "https://example.com/desk.jpg",
-      "rating": 4.2,
-      "lastUpdated": "2024-03-18"
-    },
-    {
-      "id": 4,
-      "name": "Chaise Gaming Pro",
-      "category": "Mobilier",
-      "price": 199.99,
-      "stock": 56,
-      "description": "Chaise de bureau ergonomique avec support lombaire",
-      "image": "https://example.com/chair.jpg",
-      "rating": 4.6,
-      "lastUpdated": "2024-03-17"
-    },
-    {
-      "id": 5,
-      "name": "Écran 4K 32\"",
-      "category": "Électronique",
-      "price": 449.99,
-      "stock": 34,
-      "description": "Écran 4K avec technologie HDR et temps de réponse 1ms",
-      "image": "https://example.com/monitor.jpg",
-      "rating": 4.7,
-      "lastUpdated": "2024-03-16"
-    },
-    {
       "id": "0604",
-      "name": "Casque bluetooth",
+      "name": "Speaker bluetooth",
       "description": "ce produit est un produit de haute qualité",
       "category": "Électronique",
       "price": 500,
+      "stock": 7,
+      "image": "",
+      "rating": 0,
+      "lastUpdated": "2025-06-07"
+    },
+    {
+      "id": "4b69",
+      "name": "Laptop hp omen gaming",
+      "description": "Meilleurs laptop pour le 3d",
+      "category": "Électronique",
+      "price": 800,
       "stock": 10,
       "image": "",
       "rating": 0,
