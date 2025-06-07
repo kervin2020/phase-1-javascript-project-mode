@@ -1,18 +1,12 @@
-// Configuration de l'API
-const API_URL = 'https://api.jsonbin.io/v3/b/65f2d266266cfc3fde9273a8';
-
-// Éléments DOM
+const API_URL = 'https://api.jsonbin.io/v3/b/68438e938960c979a5a6172a/record';
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 const searchInput = document.getElementById('search-input');
 const contentSection = document.getElementById('content-section');
 const categoryFilter = document.getElementById('category-filter');
 const productForm = document.getElementById('product-form');
-
-// État de l'application
 let products = [];
 
-// Gestion du thème
 themeToggle.addEventListener('click', () => {
     const currentTheme = body.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -20,19 +14,16 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', newTheme);
 });
 
-// Gestion de la recherche
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     filterContent(searchTerm);
 });
 
-// Gestion du filtre par catégorie
 categoryFilter.addEventListener('change', (e) => {
     const category = e.target.value;
     filterByCategory(category);
 });
 
-// Gestion du formulaire
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const newProduct = {
@@ -50,7 +41,8 @@ productForm.addEventListener('submit', async (e) => {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
             },
             body: JSON.stringify(newProduct)
         });
@@ -66,11 +58,15 @@ productForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Chargement initial des données
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch(API_URL);
-        products = await response.json();
+        const response = await fetch(API_URL, {
+            headers: {
+                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
+            }
+        });
+        const data = await response.json();
+        products = data.record.products;
         displayContent(products);
     } catch (error) {
         console.error('Erreur lors du chargement des données:', error);
@@ -78,7 +74,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Fonction pour afficher le contenu
 function displayContent(data) {
     contentSection.innerHTML = data.map(product => `
         <div class="card">
@@ -103,7 +98,6 @@ function displayContent(data) {
     `).join('');
 }
 
-// Fonction pour filtrer le contenu
 function filterContent(searchTerm) {
     const filteredProducts = products.filter(product => 
         product.name.toLowerCase().includes(searchTerm) ||
@@ -112,7 +106,6 @@ function filterContent(searchTerm) {
     displayContent(filteredProducts);
 }
 
-// Fonction pour filtrer par catégorie
 function filterByCategory(category) {
     const filteredProducts = category
         ? products.filter(product => product.category === category)
@@ -120,15 +113,15 @@ function filterByCategory(category) {
     displayContent(filteredProducts);
 }
 
-// Fonction pour mettre à jour le stock
 async function updateStock(id, newStock) {
     if (newStock < 0) return;
     
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await fetch(API_URL, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Master-Key': '$2a$10$AAxEpVRZtQnnLfHR1ZLT9urct5/n5I1WfqodoXvVLP67KvEL7Bqf6'
             },
             body: JSON.stringify({ 
                 stock: newStock,
@@ -148,7 +141,6 @@ async function updateStock(id, newStock) {
     }
 }
 
-// Chargement du thème sauvegardé
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
     body.setAttribute('data-theme', savedTheme);
