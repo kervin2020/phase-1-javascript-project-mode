@@ -1,5 +1,5 @@
 // Configuration de l'API
-const API_URL = 'http://localhost:3000/products';
+const API_URL = 'https://api.jsonbin.io/v3/b/65f2d266266cfc3fde9273a8';
 
 // Éléments DOM
 const themeToggle = document.getElementById('theme-toggle');
